@@ -15,15 +15,20 @@ us_canada_user_rating_pivot = pd.read_csv(base_loc+"\\us_canada_user_rating_pivo
 us_canada_user_rating_pivot.set_index("bookTitle",inplace = True)
 us_canada_user_rating_matrix = csr_matrix(us_canada_user_rating_pivot.values)
 #demo test_case
-def test_model_output(model_knn:NearestNeighbors):# if __name__ == '__main__':
+def test_model_output(model_knn:NearestNeighbors,return_list:bool=False,n_neighbors:int=6):# if __name__ == '__main__':
     query_index = randint(0,us_canada_user_rating_pivot.shape[0]-1)#np.random.choice(us_canada_user_rating_pivot.shape[0])
     # print(query_index,us_canada_user_rating_pivot.shape)
-    distances, indices = model_knn.kneighbors(us_canada_user_rating_pivot.iloc[query_index,:].values.reshape(1, -1), n_neighbors = 6)
+    distances, indices = model_knn.kneighbors(us_canada_user_rating_pivot.iloc[query_index,:].values.reshape(1, -1), n_neighbors = n_neighbors)
     for i in range(0, len(distances.flatten())):
         if i == 0:
             print('Recommendations for {0}:\n'.format(us_canada_user_rating_pivot.index[query_index]))
         else:
             print('{0}: {1}, with distance of {2}:'.format(i, us_canada_user_rating_pivot.index[indices.flatten()[i]], distances.flatten()[i]))
+    if(return_list):
+        return [
+            (i,us_canada_user_rating_pivot.index[indices.flatten()[i]],distances.flatten()[i])
+            for i in range(0, len(distances.flatten()))]
+    return []
 
 def build_knn_model():
     #build model
