@@ -32,22 +32,23 @@ def build_knn_model():
     test_model_output(model_knn)
     return model_knn
 
-model_knn = build_knn_model()
-# saving model 
+if __name__ == '__main__':
+    model_knn = build_knn_model()
+    # saving model 
 
-# Its important to use binary mode
-# 
-model_loc = os.path.join(os.path.dirname(__file__), os.path.join('models')) 
-knnPickle = open(model_loc+'\\knnpickle_file', 'wb') 
-# source, destination 
-pickle.dump(model_knn, knnPickle)                      
-knnPickle.close()
-# load the model from disk
-loaded_model = pickle.load(open(model_loc+'\\knnpickle_file', 'rb'))
-#test the models output
-test_model_output(loaded_model)
+    # Its important to use binary mode
+    # 
+    model_loc = os.path.join(os.path.dirname(__file__), os.path.join('models')) 
+    knnPickle = open(model_loc+'\\knnpickle_file', 'wb') 
+    # source, destination 
+    pickle.dump(model_knn, knnPickle)                      
+    knnPickle.close()
+    # load the model from disk
+    loaded_model = pickle.load(open(model_loc+'\\knnpickle_file', 'rb'))
+    #test the models output
+    test_model_output(loaded_model)
 
-## save using joblib library
-joblib.dump(model_knn , model_loc+'\\model_knn.pkl')
-modelknn_loaded = joblib.load( model_loc+'\\model_knn.pkl' , mmap_mode ='r')
-test_model_output(modelknn_loaded)
+    ## save using joblib library
+    joblib.dump(model_knn , model_loc+'\\model_knn.pkl')
+    modelknn_loaded = joblib.load( model_loc+'\\model_knn.pkl' , mmap_mode ='r')
+    test_model_output(modelknn_loaded)
